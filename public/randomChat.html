@@ -98,7 +98,7 @@
         }
         .chat-messages {
             padding: 30px;
-            max-height: 500px;
+            max-height: 400px;
             overflow-y: auto;
         }
         .message .meta {
@@ -112,7 +112,7 @@
         
         .message img {
             max-width: 200px;
-            max-height: 200px;
+            max-height: 150px;
             border-radius: 10px;
             margin: 5px 0;
         }
@@ -137,14 +137,14 @@
         <header class="chat-header">
             <h1><i class="fas fa-smile"></i> NightCHAT</h1>
             <div class="header-stats">
-                <span id="active-pairs">Aktif Kullanıcılar: 0</span>
-                <span id="waiting-users">Bekleyen Kullanıcılar: 0</span>
+                <span id="active-pairs">Aktif: 0</span>
+                <span id="waiting-users">Bekleyen: 0</span>
             </div>
-            <div>
-                <button id="next-button" class="btn" style="background: linear-gradient(45deg, #4ECDC4, #667aff); color: white; padding: 8px 20px; border-radius: 20px; transition: all 0.3s ease;">
-                    <i class="fas fa-random"></i> Yeni Eşleşme
+            <div class="header-buttons">
+                <button id="next-button" class="btn" style="width: auto; margin: 0;">
+                    <i class="fas fa-random"></i> Yeni Esleşme
                 </button>
-                <a href="index.html" class="btn">
+                <a href="index.html" class="btn" style="width: auto; margin: 0; background: #d9534f;">
                     <i class="fas fa-sign-out-alt"></i> Çıkış
                 </a>
             </div>
