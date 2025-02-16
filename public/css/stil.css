@@ -202,13 +202,151 @@ a {
 }
 
 @media (max-width: 700px) {
-	.chat-main {
-		display: block;
-	}
+    body {
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
 
-	.chat-sidebar {
-		display: none;
-	}
+    .chat-container {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        padding: 10px;
+        height: 60px;
+        min-height: unset;
+    }
+
+    .chat-header h1 {
+        font-size: 1.2rem;
+    }
+
+    .chat-sidebar {
+        display: none;
+    }
+
+    .chat-main {
+        flex: 1;
+        height: calc(100vh - 120px);
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: 1fr;
+    }
+
+    .chat-messages {
+        flex: 1;
+        height: auto;
+        max-height: unset;
+        padding: 10px;
+        overflow-y: auto;
+        margin-bottom: 60px; /* Mesaj yazma alanı için boşluk */
+    }
+
+    .chat-form-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        background: var(--dark-color-a);
+        height: 60px;
+    }
+
+    .chat-form-container form {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 0;
+    }
+
+    .chat-form-container input[type='text'] {
+        height: 40px;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .chat-form-container button {
+        height: 40px;
+        padding: 0 15px;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .message {
+        padding: 8px;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .message .meta {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+}
+
+/* Daha küçük ekranlar için */
+@media (max-width: 480px) {
+    .chat-header {
+        height: 50px;
+    }
+
+    .chat-header h1 {
+        font-size: 1.1rem;
+    }
+
+    .chat-form-container {
+        height: 50px;
+    }
+
+    .chat-form-container input[type='text'] {
+        height: 36px;
+        font-size: 13px;
+    }
+
+    .chat-form-container button {
+        height: 36px;
+        font-size: 13px;
+    }
+
+    .chat-messages {
+        margin-bottom: 50px;
+    }
+}
+
+/* Yatay mod için */
+@media (orientation: landscape) and (max-height: 500px) {
+    .chat-container {
+        height: 100vh;
+    }
+
+    .chat-header {
+        height: 40px;
+    }
+
+    .chat-main {
+        height: calc(100vh - 90px);
+    }
+
+    .chat-messages {
+        margin-bottom: 40px;
+    }
+
+    .chat-form-container {
+        height: 40px;
+    }
+
+    .chat-form-container input[type='text'],
+    .chat-form-container button {
+        height: 30px;
+    }
 }
 
 /* Responsive tasarım için medya sorguları */
