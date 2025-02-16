@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+        crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>ChatCord App</title>
+</head>
+<body>
+    <div class="join-container">
+        <header class="join-header">
+            <h1><i class="fas fa-smile"></i> NightCHAT</h1>
+        </header>
+        <main class="join-main">
+            <form id="join-form" action="chat.html">
+                <div class="form-control">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Enter username..."
+                        required
+                    />
+                </div>
+                <div class="form-control">
+                    <label for="room">Room</label>
+                    <select name="room" id="room" required>
+                        <option value="">Lütfen bir oda seçin...</option>
+                    </select>
+                </div>
+
+                <!-- Dinamik Parola Alanı -->
+                <div class="form-control" id="password-container" style="display: none;">
+                    <label for="password">Room Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter room password..." />
+                </div>
+
+                <button type="submit" class="btn">GİRİŞ YAP</button>
+                <!-- Error message container -->
+           <div id="error-message" style="color: red; margin-top: 10px;"></div>
+
+                <!-- Oda Kurma -->          
+
+                <!-- Random chat butonu ekleyelim -->
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <a href="createdRoom.html" class="btn btn-secondary" style="flex: 1;">Oda Kur</a>
+                    <button id="random-chat-btn" class="btn" style="flex: 1; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); color: white; transition: transform 0.3s;">Random Chat</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const randomChatBtn = document.getElementById('random-chat-btn');
+        const usernameInput = document.getElementById('username');
+
+        document.getElementById('random-chat-btn').addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            if (!username) {
+                alert('Lütfen bir kullanıcı adı girin!');
+                return;
+            }
+            window.location.href = `waiting.html?username=${username}`;
+        });
+
+        socket.on('matchFound', ({ room }) => {
+            window.location.href = `/chat.html?username=${usernameInput.value}&room=${room}&isRandom=true`;
+        });
+
+        async function loadRooms() {
+            const response = await fetch('/get-rooms');
+            const rooms = await response.json();
+
+            const roomSelect = document.getElementById('room');
+            roomSelect.innerHTML = '<option value="">Lütfen bir oda seçin...</option>'; 
+
+            rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room.name;
+                option.textContent = room.free 
+                    ? `${room.name} (Serbest)` 
+                    : `${room.name} (Parolalı)`;
+                option.setAttribute('data-password', room.free ? "false" : "true"); 
+                roomSelect.appendChild(option);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRooms();
+
+            const roomSelect = document.getElementById('room');
+            const passwordContainer = document.getElementById('password-container');
+
+            roomSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption.getAttribute('data-password') === "true") {
+                    passwordContainer.style.display = 'block';
+                } else {
+                    passwordContainer.style.display = 'none';
+                }
+            });
+
+			document.getElementById('join-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const roomSelect = document.getElementById('room');
+    const roomName = roomSelect.value;
+    const selectedOption = roomSelect.options[roomSelect.selectedIndex];
+    const isPasswordRequired = selectedOption.getAttribute('data-password') === "true";
+    const passwordInput = document.getElementById('password');
+    const password = passwordInput ? passwordInput.value : '';
+
+    if (!roomName) {
+        alert("Lütfen bir oda seçin.");
+        return;
+    }
+
+    // Sadece parolalı oda seçildiyse parola kontrolü yap
+    if (isPasswordRequired && !password.trim()) {
+        alert("Parolalı oda için parola kısmı boş bırakılamaz");
+        return;
+    }
+
+    try {
+        const response = await fetch('/join-room', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roomName, password })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Odaya giriş başarısız!");
+        }
+
+        const data = await response.json();
+       
+        if (data.success) {
+            window.location.href = `chat.html?username=${username}&room=${roomName}`;
+        } else {
+            alert('Parola hatalı!');
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+
+});
+    </script>
+</body>
+</html>

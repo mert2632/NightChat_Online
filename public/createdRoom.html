@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+    crossorigin="anonymous"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+  <title>Oda Oluştur</title>
+</head>
+<body>
+  <div class="join-container">
+    <header class="join-header">
+      <h1><i class="fas fa-smile"></i> NightCHAT</h1>
+    </header>
+    <main class="join-main">
+      <form action="chat.html" id="createRoomForm">
+        <div class="form-control">
+       
+        <div class="form-control">
+          <label for="room">Oda Adı</label>
+          <input
+            type="text"
+            name="room"
+            id="room"
+            placeholder="Oda adını giriniz..."
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label for="privateRoom">
+            <input
+              type="checkbox"
+              id="privateRoom"
+              name="privateRoom"
+              onclick="togglePasswordFields()"
+            />
+            Özel Oda
+          </label>
+        </div>
+        <div class="form-control">
+          <label for="password">Parola</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Parola giriniz..."
+            disabled
+          />
+        </div>
+        <div class="form-control">
+          <label for="confirmPassword">Parolayı Onayla</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Parolayı tekrar giriniz..."
+            disabled
+          />
+        </div>
+
+        <p id="errorMessage" style="color: red; display: none;">
+          Parolalar eşleşmiyor!
+        </p>
+
+        <button class="btn" type="submit">Oluştur</button>
+      </form>
+    </main>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
+<script>
+        // Enable/disable password fields based on "Özel Oda" checkbox
+        function togglePasswordFields() {
+      const isPrivate = document.getElementById('privateRoom').checked;
+      document.getElementById('password').disabled = !isPrivate;
+      document.getElementById('confirmPassword').disabled = !isPrivate;
+      if (!isPrivate) {
+        document.getElementById('password').value = '';
+        document.getElementById('confirmPassword').value = '';
+        document.getElementById('errorMessage').style.display = 'none';
+      }
+    }
+    document.getElementById('createRoomForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const roomName = document.getElementById('room').value;
+    const isPrivate = document.getElementById('privateRoom').checked;
+    const password = isPrivate ? document.getElementById('password').value : '';
+    const confirmPassword = isPrivate ? document.getElementById('confirmPassword').value : '';
+
+    // Parola zorunluysa ve boşsa hata göster
+    if (isPrivate && !password.trim()) {
+        alert('Parola boş bırakılamaz!');
+        return;
+    }
+
+    // Parolalar eşleşmiyorsa hata göster
+    if (isPrivate && password !== confirmPassword) {
+        alert('Parolalar eşleşmiyor!');
+        return;
+    }
+
+    const response = await fetch('/create-room', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: roomName, password })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+        alert('Oda başarıyla oluşturuldu!');
+        window.location.href = 'index.html'; // Ana sayfaya yönlendir
+    } else {
+        alert(data.message);
+    }
+});
+
+
+</script>

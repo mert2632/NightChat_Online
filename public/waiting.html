@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Eşleşme Bekleniyor</title>
+    <style>
+        .waiting-container {
+            text-align: center;
+            padding: 50px;
+            background: var(--dark-color-b);
+            border-radius: 10px;
+            color: white;
+        }
+        .countdown {
+            font-size: 48px;
+            margin: 20px 0;
+            color: #4ECDC4;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="join-container">
+        <header class="join-header">
+            <h1><i class="fas fa-smile"></i> NightCHAT</h1>
+        </header>
+        <main class="waiting-container">
+            <h2>Eşleşme Bekleniyor</h2>
+            <div class="countdown" id="countdown">10</div>
+            <div class="stats">
+                <div class="stat-box">
+                    <h3>Bekleyen Kullanıcılar</h3>
+                    <div id="waiting-count">0</div>
+                </div>
+            </div>
+            <div id="status-message">Eşleşme için diğer kullanıcılar bekleniyor...</div>
+            <button id="cancel-btn" class="btn" style="margin-top: 20px; background: #FF6B6B; color: white;">İptal Et</button>
+        </main>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/waiting.js"></script>
+</body>
+</html> 
