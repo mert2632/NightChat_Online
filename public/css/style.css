@@ -18,8 +18,8 @@ body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	background: var(--light-color);
-	margin: 10px;
-
+	margin: 0;
+	height: 100vh;
 }
 
 ul {
@@ -32,47 +32,56 @@ a {
 
 .btn {
 	cursor: pointer;
-	padding: 5px 15px;
-	background: var(--light-color);
-	color: var(--dark-color-a);
+	padding: 10px 15px;
+	background: var(--dark-color-a);
+	color: #fff;
 	border: 0;
-	font-size: 17px;
+	border-radius: 5px;
+	font-size: 15px;
+	width: 100%;
+	margin-bottom: 10px;
 }
 
 /* Chat Page */
 
 .chat-container {
-	max-width: 1150px;
-	background: #fff;
-	margin: 20px auto;
-	overflow: hidden;
+	max-width: 1100px;
+	margin: 0 auto;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
 .chat-header {
 	background: var(--dark-color-a);
 	color: #fff;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
 	padding: 15px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
+.chat-header h1 {
+	font-size: 1.5rem;
+	margin: 0;
+}
+
 .chat-main {
-	display: grid;
-	grid-template-columns: 1fr 3fr;
+	flex: 1;
+	display: flex;
+	height: calc(100vh - 130px);
 }
 
 .chat-sidebar {
 	background: var(--dark-color-b);
 	color: #fff;
-	padding: 20px 20px 60px;
-	overflow-y: scroll;
+	padding: 20px;
+	overflow-y: auto;
+	flex: 0 0 200px;
 }
 
 .chat-sidebar h2 {
-	font-size: 20px;
+	font-size: 1.2rem;
 	background: rgba(0, 0, 0, 0.1);
 	padding: 10px;
 	margin-bottom: 20px;
@@ -87,16 +96,19 @@ a {
 }
 
 .chat-messages {
+	flex: 1;
 	padding: 30px;
-	max-height: 500px;
-	overflow-y: scroll;
+	overflow-y: auto;
+	max-height: calc(100vh - 190px);
+	background: #f4f4f4;
 }
 
 .chat-messages .message {
 	padding: 10px;
 	margin-bottom: 15px;
-	background-color: var(--light-color);
+	background-color: #fff;
 	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .chat-messages .message .meta {
@@ -112,83 +124,190 @@ a {
 }
 
 .chat-form-container {
-	
-	padding: 20px 30px;
+	padding: 15px;
 	background-color: var(--dark-color-a);
 }
 
 .chat-form-container form {
 	display: flex;
+	gap: 10px;
 }
 
 .chat-form-container input[type='text'] {
-	font-size: 16px;
-	padding: 5px;
-	height: 40px;
 	flex: 1;
+	font-size: 16px;
+	padding: 8px;
+	height: 40px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
 }
-#typing-message {
-    font-style: italic;
-    color: #888;
-}
+
 /* Join Page */
 .join-container {
 	max-width: 500px;
-	margin: 80px auto;
-	color: #fff;
+	margin: 20px auto;
+	padding: 0 15px;
+	height: auto;
 }
 
 .join-header {
 	text-align: center;
-	padding: 20px;
+	padding: 15px;
 	background: var(--dark-color-a);
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
 
-.join-main {
-	padding: 30px 40px;
-	background: var(--dark-color-b);
+.join-header h1 {
+	color: #fff;
+	font-size: 1.5rem;
+	margin: 0;
 }
 
-.join-main p {
-	margin-bottom: 20px;
+.join-main {
+	padding: 20px;
+	background: #fff;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 .join-main .form-control {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 }
 
 .join-main label {
 	display: block;
 	margin-bottom: 5px;
+	font-weight: bold;
 }
 
-.join-main input[type='text'] {
-	font-size: 16px;
-	padding: 5px;
-	height: 40px;
-	width: 100%;
-}
-
+.join-main input[type='text'],
+.join-main input[type='password'],
 .join-main select {
-	font-size: 16px;
-	padding: 5px;
+	width: 100%;
+	padding: 8px;
 	height: 40px;
-	width: 100%;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
 }
 
-.join-main .btn {
-	margin-top: 20px;
-	width: 100%;
-}
-
+/* Mobil için ek düzenlemeler */
 @media (max-width: 700px) {
-	.chat-main {
-		display: block;
-	}
-
 	.chat-sidebar {
 		display: none;
 	}
+	
+	.chat-main {
+		height: calc(100vh - 110px);
+	}
+	
+	.chat-messages {
+		height: 100%;
+	}
+	
+	.chat-form-container {
+		padding: 10px;
+	}
+	
+	.btn {
+		font-size: 14px;
+		padding: 8px 12px;
+	}
+	
+	.join-container {
+		margin: 10px auto;
+	}
+	
+	.join-header h1 {
+		font-size: 1.2rem;
+	}
+	
+	.chat-messages {
+		padding: 20px;
+	}
+	
+	.message {
+		padding: 8px;
+		margin-bottom: 10px;
+	}
+}
+
+/* Mobil için ek düzenlemeler */
+@media (max-width: 480px) {
+	.join-container {
+		margin: 0;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.join-main {
+		flex: 1;
+		overflow-y: auto;
+	}
+	
+	.chat-form-container form {
+		flex-direction: column;
+	}
+	
+	.chat-form-container input[type='text'] {
+		margin-bottom: 10px;
+	}
+	
+	.message .meta {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	.btn {
+		height: 40px;
+		margin-top: 5px;
+	}
+}
+
+/* Dosya yükleme butonu için stil */
+.file-upload-btn {
+	background: var(--dark-color-b);
+	color: white;
+	padding: 8px 15px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.file-upload-btn:hover {
+	background: var(--dark-color-a);
+}
+
+/* Emoji picker için stil */
+.emoji-picker {
+	position: absolute;
+	bottom: 70px;
+	right: 20px;
+	z-index: 1000;
+}
+
+/* Yüklenen dosya önizleme */
+.file-preview {
+	max-width: 200px;
+	max-height: 200px;
+	margin: 10px 0;
+}
+
+/* Mesaj içindeki dosyalar için stil */
+.message-file {
+	max-width: 200px;
+	max-height: 200px;
+	margin-top: 10px;
+	border-radius: 5px;
+}
+
+/* Dosya indirme linki */
+.file-download {
+	color: var(--dark-color-a);
+	text-decoration: underline;
+	margin-top: 5px;
+	display: inline-block;
 }
